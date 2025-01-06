@@ -2,6 +2,15 @@ const timerDisplay = document.querySelector('.timer');
 const startBtn = document.getElementById('startBtn');
 const resetBtn = document.getElementById('resetBtn');
 const addFiveBtn = document.getElementById('addFiveBtn');
+const focusModal = document.getElementById('focusModal');
+const focusInput = document.getElementById('focusInput');
+const saveFocusBtn = document.getElementById('saveFocus');
+const cancelFocusBtn = document.getElementById('cancelFocus');
+const focusDisplay = document.createElement('div');
+focusDisplay.className = 'focus-display';
+const container = document.querySelector('.container');
+container.insertBefore(focusDisplay, container.firstChild);
+const closeModalBtn = document.getElementById('closeModalBtn');
 
 let timeLeft = 25 * 60; // 25 minutes in seconds
 let timerId = null;
@@ -20,28 +29,27 @@ function updateDisplay() {
 }
 
 function startTimer() {
-    if (isRunning) {
+    if (!isRunning) {
+        isRunning = true;
+        startBtn.textContent = 'Pause';
+        timerDisplay.contentEditable = 'false';
+
+        timerId = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+
+            if (timeLeft <= 0) {
+                clearInterval(timerId);
+                alert('Time is up!');
+                resetTimer();
+            }
+        }, 1000);
+    } else {
         clearInterval(timerId);
         startBtn.textContent = 'Start';
         timerDisplay.contentEditable = 'true';
         isRunning = false;
-        return;
     }
-
-    isRunning = true;
-    startBtn.textContent = 'Pause';
-    timerDisplay.contentEditable = 'false';
-
-    timerId = setInterval(() => {
-        timeLeft--;
-        updateDisplay();
-
-        if (timeLeft <= 0) {
-            clearInterval(timerId);
-            alert('Time is up!');
-            resetTimer();
-        }
-    }, 1000);
 }
 
 function resetTimer() {
@@ -80,7 +88,83 @@ function addFiveMinutes() {
     updateDisplay();
 }
 
+function showFocusModal() {
+    console.log('Opening modal');
+    focusModal.classList.add('show');
+    focusInput.focus();
+}
+
+function hideFocusModal() {
+    focusModal.classList.remove('show');
+    focusInput.value = '';
+}
+
+function handleFocusButton() {
+    console.log('Focus button clicked');
+    showFocusModal();
+}
+
+function saveFocus() {
+    const focusText = focusInput.value.trim();
+    if (focusText) {
+        focusDisplay.innerHTML = `<strong>Focus:</strong> ${focusText}`;
+        focusDisplay.style.display = 'block';
+        hideFocusModal();
+        
+        // Save to localStorage to persist across refreshes
+        localStorage.setItem('pomodoroFocus', focusText);
+    }
+}
+
+// Add function to load saved focus
+function loadSavedFocus() {
+    const savedFocus = localStorage.getItem('pomodoroFocus');
+    if (savedFocus) {
+        focusDisplay.innerHTML = `<strong>Focus:</strong> ${savedFocus}`;
+        focusDisplay.style.display = 'block';
+    }
+}
+
+// Add function to clear focus
+function clearFocus() {
+    focusDisplay.style.display = 'none';
+    localStorage.removeItem('pomodoroFocus');
+}
+
+// Add click handler to focus display to edit focus
+focusDisplay.addEventListener('click', () => {
+    focusInput.value = localStorage.getItem('pomodoroFocus') || '';
+    showFocusModal();
+});
+
+// Load saved focus when page loads
+loadSavedFocus();
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        hideFocusModal();
+    }
+});
+
+closeModalBtn.addEventListener('click', hideFocusModal);
+saveFocusBtn.addEventListener('click', saveFocus);
+cancelFocusBtn.addEventListener('click', hideFocusModal);
+
+// Move the Set Focus button creation to the top of the script
+// (right after other DOM element selections)
+const setFocusBtn = document.createElement('button');
+setFocusBtn.textContent = '📝 Set Focus';
+setFocusBtn.style.backgroundColor = '#28a745';
+setFocusBtn.addEventListener('click', handleFocusButton);
+document.querySelector('.buttons').appendChild(setFocusBtn);
+
+focusModal.addEventListener('click', (e) => {
+    if (e.target === focusModal) {
+        hideFocusModal();
+    }
+});
+
 startBtn.addEventListener('click', startTimer);
 resetBtn.addEventListener('click', resetTimer);
-handleTimerInput();
-addFiveBtn.addEventListener('click', addFiveMinutes); 
+addFiveBtn.addEventListener('click', addFiveMinutes);
+handleTimerInput(); 

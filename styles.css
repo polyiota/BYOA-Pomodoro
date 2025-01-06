@@ -10,7 +10,7 @@ body {
 
 .container {
     text-align: center;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -55,4 +55,131 @@ button:hover {
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.focus-text {
+    color: #ffffff;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    margin: 20px;
+}
+
+.modal-content h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.modal-content textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: none;
+    height: 120px;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+}
+
+.modal-content textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+}
+
+#cancelFocus {
+    background-color: #6c757d;
+}
+
+#saveFocus {
+    background-color: #007bff;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.5rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.focus-display {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    display: none;
+    border-left: 4px solid #007bff;
+    text-align: left;
+}
+
+.focus-display:hover {
+    background-color: #e8e8e8;
+    cursor: pointer;
 } 
