@@ -9,7 +9,8 @@ const cancelFocusBtn = document.getElementById('cancelFocus');
 const focusDisplay = document.createElement('div');
 focusDisplay.className = 'focus-display';
 const container = document.querySelector('.container');
-container.insertBefore(focusDisplay, container.firstChild);
+const h1Element = container.querySelector('h1');
+container.insertBefore(focusDisplay, h1Element.nextSibling);
 const closeModalBtn = document.getElementById('closeModalBtn');
 
 let timeLeft = 25 * 60; // 25 minutes in seconds
@@ -107,37 +108,49 @@ function handleFocusButton() {
 function saveFocus() {
     const focusText = focusInput.value.trim();
     if (focusText) {
-        focusDisplay.innerHTML = `<strong>Focus:</strong> ${focusText}`;
+        focusDisplay.innerHTML = `
+            <span class="focus-text">${focusText}</span>
+            <button class="clear-focus-btn" title="Clear focus">×</button>
+        `;
         focusDisplay.style.display = 'block';
         hideFocusModal();
         
-        // Save to localStorage to persist across refreshes
         localStorage.setItem('pomodoroFocus', focusText);
     }
 }
 
-// Add function to load saved focus
 function loadSavedFocus() {
     const savedFocus = localStorage.getItem('pomodoroFocus');
     if (savedFocus) {
-        focusDisplay.innerHTML = `<strong>Focus:</strong> ${savedFocus}`;
+        focusDisplay.innerHTML = `
+            <span class="focus-text">${savedFocus}</span>
+            <button class="clear-focus-btn" title="Clear focus">×</button>
+        `;
         focusDisplay.style.display = 'block';
+        
+        const clearBtn = focusDisplay.querySelector('.clear-focus-btn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                clearFocus();
+            });
+        }
     }
 }
 
-// Add function to clear focus
 function clearFocus() {
     focusDisplay.style.display = 'none';
     localStorage.removeItem('pomodoroFocus');
+    resetTimer();
 }
 
-// Add click handler to focus display to edit focus
-focusDisplay.addEventListener('click', () => {
-    focusInput.value = localStorage.getItem('pomodoroFocus') || '';
-    showFocusModal();
+focusDisplay.addEventListener('click', (e) => {
+    if (!e.target.closest('.clear-focus-btn')) {
+        focusInput.value = localStorage.getItem('pomodoroFocus') || '';
+        showFocusModal();
+    }
 });
 
-// Load saved focus when page loads
 loadSavedFocus();
 
 document.addEventListener('keydown', (e) => {
@@ -150,8 +163,6 @@ closeModalBtn.addEventListener('click', hideFocusModal);
 saveFocusBtn.addEventListener('click', saveFocus);
 cancelFocusBtn.addEventListener('click', hideFocusModal);
 
-// Move the Set Focus button creation to the top of the script
-// (right after other DOM element selections)
 const setFocusBtn = document.createElement('button');
 setFocusBtn.textContent = '📝 Set Focus';
 setFocusBtn.style.backgroundColor = '#28a745';

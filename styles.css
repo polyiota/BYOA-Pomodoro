@@ -107,10 +107,10 @@ button:disabled {
 }
 
 .focus-text {
-    color: #ffffff;
+    color: #333;
+    flex: 1;
     font-size: 1.2rem;
-    margin-top: 1rem;
-    font-style: italic;
+    margin-top: 0;
 }
 
 .modal-content {
@@ -198,18 +198,39 @@ button:disabled {
 .focus-display {
     color: #333;
     font-size: clamp(1rem, 3vw, 1.2rem);
-    margin-bottom: 1rem;
-    padding: 0.8rem;
+    margin: 0.5rem 0 1.5rem 0;
+    padding: 1.2rem;
     border-radius: 5px;
     background-color: #f0f0f0;
     display: none;
-    border-left: 4px solid #007bff;
-    text-align: left;
+    border-left: none;
+    text-align: center;
+    font-style: italic;
+    transition: background-color 0.2s;
+    position: relative;
+}
+
+.focus-display::before {
+    content: 'FOCUS';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: #007bff;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 12px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    font-style: normal;
 }
 
 .focus-display:hover {
     background-color: #e8e8e8;
     cursor: pointer;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 @media (hover: none) {
@@ -250,6 +271,15 @@ button:disabled {
     .modal-content h2 {
         padding-right: 2rem;
     }
+
+    .focus-display {
+        padding: 1rem;
+    }
+    
+    .focus-display::before {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.6rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -279,5 +309,51 @@ button:disabled {
 
     .modal-content textarea {
         height: 60px;
+    }
+}
+
+/* Add styles for the clear focus button */
+.focus-display {
+    /* ... existing styles ... */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.focus-text {
+    flex: 1;
+}
+
+.clear-focus-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0.4rem;
+    min-width: auto;  /* Override default button min-width */
+    font-size: 1rem;
+    color: #666;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    background-color: transparent;
+}
+
+.focus-display:hover .clear-focus-btn {
+    opacity: 1;
+}
+
+.clear-focus-btn:hover {
+    color: #dc3545;  /* Red color on hover */
+    background-color: transparent;
+}
+
+/* Mobile optimization for the clear button */
+@media (max-width: 480px) {
+    .clear-focus-btn {
+        opacity: 1;  /* Always visible on mobile */
+        padding: 0.5rem;  /* Larger touch target */
     }
 } 
