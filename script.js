@@ -1,6 +1,7 @@
 const timerDisplay = document.querySelector('.timer');
 const startBtn = document.getElementById('startBtn');
 const resetBtn = document.getElementById('resetBtn');
+const addFiveBtn = document.getElementById('addFiveBtn');
 
 let timeLeft = 25 * 60; // 25 minutes in seconds
 let timerId = null;
@@ -74,6 +75,12 @@ function handleTimerInput() {
     });
 }
 
+function addFiveMinutes() {
+    timeLeft += 5 * 60; // Add 5 minutes (300 seconds)
+    updateDisplay();
+}
+
 startBtn.addEventListener('click', startTimer);
 resetBtn.addEventListener('click', resetTimer);
-handleTimerInput(); 
+handleTimerInput();
+addFiveBtn.addEventListener('click', addFiveMinutes); 
