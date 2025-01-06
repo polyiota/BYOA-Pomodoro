@@ -153,10 +153,15 @@ function clearFocus() {
 }
 
 focusDisplay.addEventListener('click', (e) => {
-    if (!e.target.closest('.clear-focus-btn')) {
-        focusInput.value = localStorage.getItem('pomodoroFocus') || '';
-        showFocusModal();
+    if (e.target.closest('.clear-focus-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        clearFocus();
+        return;
     }
+    
+    focusInput.value = localStorage.getItem('pomodoroFocus') || '';
+    showFocusModal();
 });
 
 loadSavedFocus();
