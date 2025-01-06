@@ -13,7 +13,9 @@ function formatTime(seconds) {
 }
 
 function updateDisplay() {
-    timerDisplay.textContent = formatTime(timeLeft);
+    const timeString = formatTime(timeLeft);
+    timerDisplay.textContent = timeString;
+    document.title = isRunning ? `(${timeString}) Pomodoro Timer` : 'Pomodoro Timer';
 }
 
 function startTimer() {
@@ -44,10 +46,10 @@ function startTimer() {
 function resetTimer() {
     clearInterval(timerId);
     timeLeft = 25 * 60;
-    updateDisplay();
+    isRunning = false;
     startBtn.textContent = 'Start';
     timerDisplay.contentEditable = 'true';
-    isRunning = false;
+    updateDisplay();
 }
 
 function handleTimerInput() {
