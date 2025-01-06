@@ -199,7 +199,7 @@ button:disabled {
     color: #333;
     font-size: clamp(1rem, 3vw, 1.2rem);
     margin: 0.5rem 0 1.5rem 0;
-    padding: 1.2rem 2.5rem 1.2rem 1.2rem;
+    padding: 1.2rem 3rem 1.2rem 1.2rem;
     border-radius: 5px;
     background-color: #f0f0f0;
     display: none;
@@ -273,7 +273,7 @@ button:disabled {
     }
 
     .focus-display {
-        padding: 1rem 2.5rem 1rem 1rem;
+        padding: 1rem 3.5rem 1rem 1rem;
     }
     
     .focus-display::before {
@@ -340,6 +340,11 @@ button:disabled {
     transition: opacity 0.2s, color 0.2s;
     background-color: transparent;
     z-index: 1;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .focus-display:hover .clear-focus-btn {
@@ -354,12 +359,20 @@ button:disabled {
 /* Mobile optimization for the clear button */
 @media (max-width: 480px) {
     .focus-display {
-        padding: 1rem 2.5rem 1rem 1rem;
+        padding: 1rem 3.5rem 1rem 1rem;
     }
     
     .clear-focus-btn {
         opacity: 1;
-        padding: 0.5rem;
         right: 0.5rem;
+        width: 48px;
+        height: 48px;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 50%;
+    }
+
+    /* Add active state for mobile */
+    .clear-focus-btn:active {
+        background-color: rgba(0, 0, 0, 0.1);
     }
 } 

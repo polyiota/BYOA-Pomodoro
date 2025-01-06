@@ -115,6 +115,14 @@ function saveFocus() {
         focusDisplay.style.display = 'block';
         hideFocusModal();
         
+        const clearBtn = focusDisplay.querySelector('.clear-focus-btn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                clearFocus();
+            });
+        }
+        
         localStorage.setItem('pomodoroFocus', focusText);
     }
 }
